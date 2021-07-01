@@ -67,4 +67,4 @@ Offset    Size    Type      Desc
 0x20    END OF ENTRY
 ```
 
-Occasionally, there is an entry called `(dummy)` which seem to fill gaps in IDs. This may not be 100% the case as there seem to be gaps still, but it is also possible those gaps are where sections overlap (which seems to happen sometimes, for example, with BGM and STREAM in TWWHD)
+Occasionally, there are entries with the name `(dummy)` which seem to fill gaps in IDs. This may not be 100% the case as there seem to be gaps still, but it is also possible those gaps are where sections overlap (which seems to happen sometimes, for example, with BGM and STREAM in TWWHD)

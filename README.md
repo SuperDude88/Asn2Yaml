@@ -3,7 +3,7 @@ A tool that allows you to convert the .asn file found in JAudioRes/Seqs to a mor
 
 In `content\Cafe\<game region>\AudioRes\JAudioRes` there is a .asn file that seems to only be used in TWWHD (it is also in the SMS files, but seems to be unused) that stores the IDs and names for all tracks/sounds in the game. The list of sounds is also divided into named sections.
 
-The extractor lists the sections in the .asn and includes the section name, first entry index, number of entries, and a list of the entries inside the section. Each entry has 3 values separated by commas (`,`), the first being the index in the entry list, then the name of the entry, and the ID last. Duplicates may occur as a part of multiple sections, which is possible because some sections seem to overlap (at least in TWWHD). The building process takes the names, IDs, and indexes, and writes them back to a .asn file. This means that renaming entries to each other will switch them and switch the tracks in the game. This mostly works, but seems to have some limitations with streamed vs sequenced tracks. Switching streamed or sequenced audio to one of the streamed effects in the .bfsar file has yet to be tested.
+The extractor lists the sections in the .asn and includes the section name, first entry index, number of entries, and a list of the entries inside the section. Each entry has 3 values separated by commas (`,`), the first being the index in the entry list, then the name of the entry, and the ID last. The building process takes the names, IDs, and indexes, and writes them back to a .asn file. This means that renaming entries to each other will switch them and switch the tracks in the game. This mostly works, but seems to have some limitations with streamed vs sequenced tracks. Switching streamed or sequenced audio to one of the streamed effects in the .bfsar file has yet to be tested.
 
 # Usage
 To run the program as a python script, navigate to the folder containing the .py file and run `TWWHD_ASN_Tool.py <mode> <in_path> <out_path [optional]> <out_name [optional]>`
@@ -67,4 +67,4 @@ Offset    Size    Type      Desc
 0x20    END OF ENTRY
 ```
 
-Occasionally, there are entries with the name `(dummy)` which seem to fill gaps in IDs. This may not be 100% the case as there seem to be gaps still, but it is also possible those gaps are where sections overlap (which seems to happen sometimes, for example, with BGM and STREAM in TWWHD)
+Occasionally, there are entries with the name `(dummy)` which seem to fill gaps in IDs. This may not be 100% the case as there seem to be gaps still.

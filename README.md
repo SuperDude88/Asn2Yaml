@@ -40,7 +40,7 @@ Offset    Size    Type      Desc
 0x10    START OF SECTION FILE HEADERS/END OF MAIN HEADER
 ```
 
-Following the main header, there is a 0x20 byte header for each of the 18 sections. Their indexes always range from 0-17, although some are not used. In that case, their name is ` (no named)` and 0 entries are listed:
+Following the main header, there is a 0x20 byte header for each of the 18 sections. Their indexes always range from 0-17, although some are not used. In that case, their name is `  (no named)` and 0 entries are listed:
 
 ```
 Offset    Size    Type      Desc

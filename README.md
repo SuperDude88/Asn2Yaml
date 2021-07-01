@@ -29,13 +29,13 @@ As far as I have found, this type of archive is only used in TWWHD.
 ```
 Offset    Size    Type      Desc
 
-0x00      4       ???       Unknown. Always 0x00000000...
+0x00      ?       ???       Unknown. Always 0x00000000...
 
 0x04      ?       ???       Unknown. Always 0x00000000...
 
 0x08      ?       ???       Unknown. Always 0x00000000...
 
-0x0C      ?       uint32    Number of entries in the file
+0x0C      4       uint32    Number of entries in the file
 
 0x10    START OF SECTION FILE HEADERS/END OF MAIN HEADER
 ```

@@ -60,9 +60,11 @@ Following the 18 section headers, there are 0x20 byte blocks for each entry. The
 ```
 Offset    Size    Type      Desc
 
-0x00      28      String    May or may not be read as a 28 byte string. Contains the name of the track and is padded to 28 bytes will null values.
+0x00      28      String    May or may not be read as a 28 byte string. Contains the name of the track and is padded to 28 bytes with null values.
 
-0x1C      4       uint32    The number of entries contained in the section
+0x1C      4       uint32    The ID of the entry (not the index)
 
-0x20    END OF SECTION HEADER
+0x20    END OF ENTRY
 ```
+
+Occasionally, there is an entry called `(dummy)` which seem to fill gaps in IDs. This may not be 100% the case as there seem to be gaps still, but it is also possible those gaps are where sections overlap (which seems to happen sometimes, for example, with BGM and STREAM in TWWHD)

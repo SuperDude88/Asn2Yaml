@@ -1,7 +1,7 @@
 # Asn2Yaml
 A tool that allows you to convert the .asn file found in JAudioRes/Seqs to a more readable format and repack the yaml to .asn
 
-In `content\Cafe\<game region>\AudioRes\JAudioRes` there is a .asn file that seems to only be used in TWWHD (it is also in the SMS files, but seems to be unused) that stores the IDs and names for all tracks/sounds in the game. The list of sounds is also divided into named sections.
+In `content\Cafe\<game region>\AudioRes\JAudioRes` there is a .asn file that stores the IDs and names for all tracks/sounds in the game. The list of sounds is also divided into named sections. Games developed later in the life cycle of JSystem used this to call tracks by name instead of ID.
 
 The extractor lists the sections in the .asn and includes the section name, first entry index, number of entries, and a list of the entries inside the section. Each entry has 3 values separated by commas (`,`), the first being the index in the entry list, then the name of the entry, and the ID last. The building process takes the names, IDs, and indexes, and writes them back to a .asn file. This means that renaming entries to each other will switch them and switch the tracks in the game. This mostly works, but seems to have some limitations with streamed vs sequenced tracks. Switching streamed or sequenced audio to one of the streamed effects in the .bfsar file has yet to be tested.
 
@@ -62,9 +62,62 @@ Offset    Size    Type      Desc
 
 0x00      28      String    May or may not be read as a 28 byte string. Contains the name of the track and is padded to 28 bytes with null values.
 
-0x1C      4       uint32    The ID of the entry (not the index)
+0x1C      4       uint32    The ID of the entry (not the index), likely broken into an access mode and an ID (see later documentation)
 
 0x20    END OF ENTRY
 ```
 
 Occasionally, there are entries with the name `(dummy)` which seem to fill gaps in IDs. This may not be 100% the case as there seem to be gaps still.
+
+There is also some existing documentation I was shown:
+
+```
+ASN 
+   ENDIAN big
+   0x00 byte\[0xE] = 0; 
+   0x0D ushort total_wave_count 
+
+   <categoryNames>
+   ?? char[0x1C] NAME
+   ?? ushort len 
+   ?? ushort ID
+
+   NOTE: Categories get sorted by their ID, and then read their wave counts in order.
+   This means that if Section 10 has ID of 0030, and that section 1 has an ID of 0032 , that section 10's waves will be listed first. 
+   The header has no indication of this, but this seems to be the layout. 
+
+   <waves>
+   ?? char[0x1C] NAME;
+   ?? ushort access_mode (example, 8001 is the SEQUENCE_BGM arc in SMS, hardcoded maybe?) 
+   ?? ushort ID
+
+
+ ST 
+   0x00 byte 0x06  
+   0x01 byte ??
+   0x02 byte ??
+   0x03 byte ?? 
+   0x04 ushort entryCount 
+   0x0F categories[0x12]
+
+   <Category>
+   ushort count 
+   ushort id 
+
+   @HEADER_END 0x50;
+
+   NOTE: Categories get sorted by their ID, and then read their wave counts in order.
+   This means that if Section 10 has ID of 0030, and that section 1 has an ID of 0032 , that section 10's waves will be listed first. 
+   The header has no indication of this, but this seems to be the layout. 
+
+   <Waves>
+   byte[16] unknown
+
+
+   Additional notes: 
+
+   The sound ID isn't based off of the actual ID attached to the sequence in the ASN. A sound ID is assigned based on the INDEX in the sound table (the order it's defined).
+   Before compilation, all of the sound names are taken and transformed to their ID, then baked into the binary.
+```
+     
+I got that from Xayr, who has done a bunch of cool stuff with JAudio (https://github.com/XAYRGA)
